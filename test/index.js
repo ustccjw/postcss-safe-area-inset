@@ -5,8 +5,8 @@ function format(str) {
   return str.replace(/\s+/g, ' ').trim()
 }
 
-describe('box-flex', () => {
-  test('box-flex', async () => {
+describe('safe-area-inset', () => {
+  test('safe-area-inset-top', async () => {
     const input = `
       .test {
         margin-top: constant(safe-area-inset-top);
