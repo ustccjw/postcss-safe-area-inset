@@ -1,0 +1,52 @@
+{
+  "name": "postcss-safe-area-inset",
+  "version": "1.0.0",
+  "description": "postcss safe-area-inset for page scale",
+  "keywords": [
+    "safe-area-inset",
+    "postcss plugin",
+    "page scale"
+  ],
+  "homepage": "https://github.com/ustccjw/postcss-safe-area-inset#readme",
+  "bugs": {
+    "url": "https://github.com/ustccjw/postcss-safe-area-inset/issues"
+  },
+  "license": "MIT",
+  "author": "ustccjw",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ustccjw/postcss-safe-area-inset.git"
+  },
+  "scripts": {
+    "build": "tnpm run clean && babel src -d lib",
+    "clean": "rimraf lib",
+    "lint": "eslint .",
+    "prepublish": "tnpm test && tnpm run build",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "babel-cli": "6",
+    "babel-preset-ustccjw": "1",
+    "eslint": "3",
+    "eslint-config-ustccjw": "1",
+    "jest": "20",
+    "postcss": "6",
+    "pre-commit": "1",
+    "rimraf": "2"
+  },
+  "peerDependencies": {
+    "postcss": "6"
+  },
+  "engines": {
+    "node": "7"
+  },
+  "jest": {
+    "testMatch": [
+      "**/test/**/*.js"
+    ]
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
