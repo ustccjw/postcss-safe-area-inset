@@ -11,6 +11,7 @@ const atRule3 = postcss.atRule({
 })
 
 const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
+  let flag = false
   root.walkDecls(decl => {
     const { parent, prop, value } = decl
     const { selector } = parent
@@ -30,10 +31,13 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
       rule3.append(decl3)
       atRule2.append(rule2)
       atRule3.append(rule3)
+      flag = true
     }
   })
-  root.append(atRule2)
-  root.append(atRule3)
+  if (flag) {
+    root.append(atRule2)
+    root.append(atRule3)
+  }
 })
 
 export default plugin
