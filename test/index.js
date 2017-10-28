@@ -23,7 +23,7 @@ describe('safe-area-inset', () => {
         left: constant(safe-area-inset-left);
         right: constant(safe-area-inset-right);
       }
-      @media (min-resolution: 2dppx) {
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
         html[data-scale] .test {
           top: calc(constant(safe-area-inset-top) * 2);
         }
@@ -37,7 +37,7 @@ describe('safe-area-inset', () => {
           right: calc(constant(safe-area-inset-right) * 2);
         }
       }
-      @media (min-resolution: 3dppx) {
+      @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
         html[data-scale] .test {
           top: calc(constant(safe-area-inset-top) * 3);
         }
