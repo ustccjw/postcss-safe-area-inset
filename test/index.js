@@ -13,25 +13,25 @@ describe('safe-area-inset', () => {
         top: calc(constant(safe-area-inset-top) + 550px);
       }
     `
-    const res = await postcss([plugin()]).process(input)
+    const res = await postcss([plugin('html[data-scale]')]).process(input)
     const str = `
       .test {
         margin-top: constant(safe-area-inset-top);
         top: calc(constant(safe-area-inset-top) + 550px);
       }
       @media (min-resolution: 2dppx) {
-        .test {
+        html[data-scale] .test {
           margin-top: calc(constant(safe-area-inset-top) * 2);
         }
-        .test {
+        html[data-scale] .test {
           top: calc(calc(constant(safe-area-inset-top) * 2) + 550px);
         }
       }
       @media (min-resolution: 3dppx) {
-        .test {
+        html[data-scale] .test {
           margin-top: calc(constant(safe-area-inset-top) * 3);
         }
-        .test {
+        html[data-scale] .test {
           top: calc(calc(constant(safe-area-inset-top) * 3) + 550px);
         }
       }
