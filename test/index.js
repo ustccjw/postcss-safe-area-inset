@@ -5,53 +5,46 @@ function format(str) {
   return str.replace(/\s+/g, ' ').trim()
 }
 
+const safeAreaInset = ['safe-area-inset-top', 'safe-area-inset-bottom', 'safe-area-inset-left',
+  'safe-area-inset-right']
+
 describe('safe-area-inset', () => {
-  test('safe-area-inset', async () => {
-    const input = `
-      .test {
-        top: constant(safe-area-inset-top);
-        bottom: constant(safe-area-inset-bottom);
-        left: constant(safe-area-inset-left);
-        right: constant(safe-area-inset-right);
-      }
-    `
-    const res = await postcss([plugin('html[data-scale]')]).process(input)
-    const str = `
-      .test {
-        top: constant(safe-area-inset-top);
-        bottom: constant(safe-area-inset-bottom);
-        left: constant(safe-area-inset-left);
-        right: constant(safe-area-inset-right);
-      }
-      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-        html[data-scale] .test {
-          top: calc(constant(safe-area-inset-top) * 2);
+  safeAreaInset.forEach(key => {
+    test(key, async () => {
+      const input = `
+        .test {
+          width: constant(${key});
+          height: calc(constant(${key}) + 500px);
         }
-        html[data-scale] .test {
-          bottom: calc(constant(safe-area-inset-bottom) * 2);
+      `
+      const res = await postcss([plugin('html[data-scale]')]).process(input)
+      const str = `
+        .test {
+          width: constant(${key});
+          height: calc(constant(${key}) + 500px);
         }
-        html[data-scale] .test {
-          left: calc(constant(safe-area-inset-left) * 2);
+        @media (min-resolution: 2dppx) {
+          html[data-scale] .test {
+            width: calc(constant(${key}) * 2);
+          }
         }
-        html[data-scale] .test {
-          right: calc(constant(safe-area-inset-right) * 2);
+        @media (min-resolution: 3dppx) {
+          html[data-scale] .test {
+            width: calc(constant(${key}) * 3);
+          }
         }
-      }
-      @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
-        html[data-scale] .test {
-          top: calc(constant(safe-area-inset-top) * 3);
+        @media (min-resolution: 2dppx) {
+          html[data-scale] .test {
+            height: calc(calc(constant(${key}) * 2) + 500px);
+          }
         }
-        html[data-scale] .test {
-          bottom: calc(constant(safe-area-inset-bottom) * 3);
+        @media (min-resolution: 3dppx) {
+          html[data-scale] .test {
+            height: calc(calc(constant(${key}) * 3) + 500px);
+          }
         }
-        html[data-scale] .test {
-          left: calc(constant(safe-area-inset-left) * 3);
-        }
-        html[data-scale] .test {
-          right: calc(constant(safe-area-inset-right) * 3);
-        }
-      }
-    `
-    expect(format(res.css)).toBe(format(str))
+      `
+      expect(format(res.css)).toBe(format(str))
+    })
   })
 })

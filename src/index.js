@@ -4,21 +4,21 @@ const safeAreaInset = ['safe-area-inset-top', 'safe-area-inset-bottom', 'safe-ar
   'safe-area-inset-right']
 
 const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
-  const atRule2 = postcss.atRule({
-    name: 'media',
-    params: '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx)',
-  })
-  const atRule3 = postcss.atRule({
-    name: 'media',
-    params: '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx)',
-  })
-  let flag = false
+  const parents = []
   root.walkDecls(decl => {
     const { parent, prop, value } = decl
     const { selector } = parent
     safeAreaInset.forEach(key => {
       const regexp = new RegExp(`constant\\(${key}\\)`, 'g')
       if (regexp.test(value) && selector.indexOf(prefix) !== 0) {
+        const atRule2 = postcss.atRule({
+          name: 'media',
+          params: '(min-resolution: 2dppx)',
+        })
+        const atRule3 = postcss.atRule({
+          name: 'media',
+          params: '(min-resolution: 3dppx)',
+        })
         const rule2 = postcss.rule({ selector: prefix ? `${prefix} ${selector}` : selector })
         const rule3 = postcss.rule({ selector: prefix ? `${prefix} ${selector}` : selector })
         const decl2 = postcss.decl({
@@ -29,19 +29,20 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
           prop,
           value: decl.value.replace(regexp, `calc(constant(${key}) * 3)`),
         })
-
         rule2.append(decl2)
         rule3.append(decl3)
         atRule2.append(rule2)
         atRule3.append(rule3)
-        flag = true
+        if (parents.indexOf(parent) === -1) parents.push(parent)
+        parent.rules_x = parent.rules_x || []
+        parent.rules_x.push(atRule2, atRule3)
       }
     })
   })
-  if (flag) {
-    root.append(atRule2)
-    root.append(atRule3)
-  }
+  parents.forEach(parent => {
+    const { rules_x } = parent
+    for (let i = rules_x.length - 1; i >= 0; i--) parent.after(rules_x[i])
+  })
 })
 
 export default plugin
