@@ -1,6 +1,6 @@
 {
   "name": "postcss-safe-area-inset",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "postcss safe-area-inset for page scale",
   "keywords": [
     "safe-area-inset",

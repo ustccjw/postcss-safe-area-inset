@@ -41,7 +41,7 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
   })
   parents.forEach(parent => {
     const { rules_x } = parent
-    for (let i = rules_x.length - 1; i >= 0; i--) parent.after(rules_x[i])
+    for (let i = rules_x.length - 1; i >= 0; i--) parent.parent.insertAfter(parent, rules_x[i])
   })
 })
 
