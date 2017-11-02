@@ -14,14 +14,14 @@ describe('safe-area-inset', () => {
       const input = `
         .test {
           width: constant(${key});
-          height: calc(constant(${key}) + 500px);
+          height: calc(constant(${key}) + constant(safe-area-inset-right));
         }
       `
       const res = await postcss([plugin('html[data-scale]')]).process(input)
       const str = `
         .test {
           width: constant(${key});
-          height: calc(constant(${key}) + 500px);
+          height: calc(constant(${key}) + constant(safe-area-inset-right));
         }
         @media (min-resolution: 2dppx) {
           html[data-scale] .test {
@@ -35,12 +35,12 @@ describe('safe-area-inset', () => {
         }
         @media (min-resolution: 2dppx) {
           html[data-scale] .test {
-            height: calc(calc(constant(${key}) * 2) + 500px);
+            height: calc(calc(constant(${key}) * 2) + calc(constant(safe-area-inset-right) * 2));
           }
         }
         @media (min-resolution: 3dppx) {
           html[data-scale] .test {
-            height: calc(calc(constant(${key}) * 3) + 500px);
+            height: calc(calc(constant(${key}) * 3) + calc(constant(safe-area-inset-right) * 3));
           }
         }
       `

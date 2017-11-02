@@ -8,36 +8,45 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
   root.walkDecls(decl => {
     const { parent, prop, value } = decl
     const { selector } = parent
-    safeAreaInset.forEach(key => {
-      const regexp = new RegExp(`constant\\(${key}\\)`, 'g')
-      if (regexp.test(value) && selector.indexOf(prefix) !== 0) {
-        const atRule2 = postcss.atRule({
-          name: 'media',
-          params: '(min-resolution: 2dppx)',
-        })
-        const atRule3 = postcss.atRule({
-          name: 'media',
-          params: '(min-resolution: 3dppx)',
-        })
-        const rule2 = postcss.rule({ selector: prefix ? `${prefix} ${selector}` : selector })
-        const rule3 = postcss.rule({ selector: prefix ? `${prefix} ${selector}` : selector })
-        const decl2 = postcss.decl({
-          prop,
-          value: decl.value.replace(regexp, `calc(constant(${key}) * 2)`),
-        })
-        const decl3 = postcss.decl({
-          prop,
-          value: decl.value.replace(regexp, `calc(constant(${key}) * 3)`),
-        })
-        rule2.append(decl2)
-        rule3.append(decl3)
-        atRule2.append(rule2)
-        atRule3.append(rule3)
-        if (parents.indexOf(parent) === -1) parents.push(parent)
-        parent.rules_x = parent.rules_x || []
-        parent.rules_x.push(atRule2, atRule3)
-      }
-    })
+    const regexpArr = safeAreaInset.map(key => new RegExp(`constant\\(${key}\\)`, 'g'))
+    const flag = regexpArr.some(regexp => regexp.test(value))
+    if (flag) {
+      let value2 = decl.value
+      let value3 = decl.value
+      regexpArr.forEach((regexp, i) => {
+        value2 = value2.replace(regexp, `calc(constant(${safeAreaInset[i]}) * 2)`)
+        value3 = value3.replace(regexp, `calc(constant(${safeAreaInset[i]}) * 3)`)
+      })
+      selector.split(',').forEach(selector2 => {
+        if (selector2.indexOf(prefix) !== 0) {
+          const atRule2 = postcss.atRule({
+            name: 'media',
+            params: '(min-resolution: 2dppx)',
+          })
+          const atRule3 = postcss.atRule({
+            name: 'media',
+            params: '(min-resolution: 3dppx)',
+          })
+          const rule2 = postcss.rule({ selector: prefix ? `${prefix} ${selector2}` : selector2 })
+          const rule3 = postcss.rule({ selector: prefix ? `${prefix} ${selector2}` : selector2 })
+          const decl2 = postcss.decl({
+            prop,
+            value: value2,
+          })
+          const decl3 = postcss.decl({
+            prop,
+            value: value3,
+          })
+          rule2.append(decl2)
+          rule3.append(decl3)
+          atRule2.append(rule2)
+          atRule3.append(rule3)
+          if (parents.indexOf(parent) === -1) parents.push(parent)
+          parent.rules_x = parent.rules_x || []
+          parent.rules_x.push(atRule2, atRule3)
+        }
+      })
+    }
   })
   parents.forEach(parent => {
     const { rules_x } = parent
