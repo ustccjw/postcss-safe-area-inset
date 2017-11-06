@@ -18,6 +18,7 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
         value3 = value3.replace(regexp, `calc(constant(${safeAreaInset[i]}) * 3)`)
       })
       selector.split(',').forEach(selector2 => {
+        selector2 = selector2.trim() // eslint-disable-line no-param-reassign
         if (selector2.indexOf(prefix) !== 0) {
           const atRule2 = postcss.atRule({
             name: 'media',
