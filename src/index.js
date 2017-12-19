@@ -9,13 +9,18 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
     const { parent, prop, value } = decl
     const { selector } = parent
     const regexpArr = safeAreaInset.map(key => new RegExp(`constant\\(${key}\\)`, 'g'))
-    const flag = regexpArr.some(regexp => regexp.test(value))
+    const regexpArr2 = safeAreaInset.map(key => new RegExp(`env\\(${key}\\)`, 'g'))
+    const flag = [...regexpArr, ...regexpArr2].some(regexp => regexp.test(value))
     if (flag) {
       let value2 = decl.value
       let value3 = decl.value
       regexpArr.forEach((regexp, i) => {
         value2 = value2.replace(regexp, `calc(constant(${safeAreaInset[i]}) * 2)`)
         value3 = value3.replace(regexp, `calc(constant(${safeAreaInset[i]}) * 3)`)
+      })
+      regexpArr2.forEach((regexp, i) => {
+        value2 = value2.replace(regexp, `calc(env(${safeAreaInset[i]}) * 2)`)
+        value3 = value3.replace(regexp, `calc(env(${safeAreaInset[i]}) * 3)`)
       })
       selector.split(',').forEach(selector2 => {
         selector2 = selector2.trim() // eslint-disable-line no-param-reassign

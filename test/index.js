@@ -15,6 +15,8 @@ describe('safe-area-inset', () => {
         .test {
           width: constant(${key});
           height: calc(constant(${key}) + constant(safe-area-inset-right));
+          width: env(${key});
+          height: calc(env(${key}) + env(safe-area-inset-right));
         }
       `
       const res = await postcss([plugin('html[data-scale]')]).process(input)
@@ -22,6 +24,8 @@ describe('safe-area-inset', () => {
         .test {
           width: constant(${key});
           height: calc(constant(${key}) + constant(safe-area-inset-right));
+          width: env(${key});
+          height: calc(env(${key}) + env(safe-area-inset-right));
         }
         @media (min-resolution: 2dppx) {
           html[data-scale] .test {
@@ -41,6 +45,26 @@ describe('safe-area-inset', () => {
         @media (min-resolution: 3dppx) {
           html[data-scale] .test {
             height: calc(calc(constant(${key}) * 3) + calc(constant(safe-area-inset-right) * 3));
+          }
+        }
+        @media (min-resolution: 2dppx) {
+          html[data-scale] .test {
+            width: calc(env(${key}) * 2);
+          }
+        }
+        @media (min-resolution: 3dppx) {
+          html[data-scale] .test {
+            width: calc(env(${key}) * 3);
+          }
+        }
+        @media (min-resolution: 2dppx) {
+          html[data-scale] .test {
+            height: calc(calc(env(${key}) * 2) + calc(env(safe-area-inset-right) * 2));
+          }
+        }
+        @media (min-resolution: 3dppx) {
+          html[data-scale] .test {
+            height: calc(calc(env(${key}) * 3) + calc(env(safe-area-inset-right) * 3));
           }
         }
       `
