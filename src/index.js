@@ -1,4 +1,4 @@
-import postcss from 'postcss'
+const postcss = require('postcss')
 
 const safeAreaInset = ['safe-area-inset-top', 'safe-area-inset-bottom', 'safe-area-inset-left',
   'safe-area-inset-right']
@@ -27,11 +27,11 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
         if (selector2.indexOf(prefix) !== 0) {
           const atRule2 = postcss.atRule({
             name: 'media',
-            params: '(min-resolution: 2dppx)',
+            params: '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx)',
           })
           const atRule3 = postcss.atRule({
             name: 'media',
-            params: '(min-resolution: 3dppx)',
+            params: '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx)',
           })
           const rule2 = postcss.rule({ selector: prefix ? `${prefix} ${selector2}` : selector2 })
           const rule3 = postcss.rule({ selector: prefix ? `${prefix} ${selector2}` : selector2 })
@@ -60,4 +60,4 @@ const plugin = postcss.plugin('postcss-safe-area-inset', prefix => root => {
   })
 })
 
-export default plugin
+module.exports = plugin

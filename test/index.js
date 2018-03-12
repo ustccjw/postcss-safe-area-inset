@@ -1,5 +1,5 @@
-import postcss from 'postcss'
-import plugin from '../src'
+const postcss = require('postcss')
+const plugin = require('../src')
 
 function format(str) {
   return str.replace(/\s+/g, ' ').trim()
@@ -27,42 +27,42 @@ describe('safe-area-inset', () => {
           width: env(${key});
           height: calc(env(${key}) + env(safe-area-inset-right));
         }
-        @media (min-resolution: 2dppx) {
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
           html[data-scale] .test {
             width: calc(constant(${key}) * 2);
           }
         }
-        @media (min-resolution: 3dppx) {
+        @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
           html[data-scale] .test {
             width: calc(constant(${key}) * 3);
           }
         }
-        @media (min-resolution: 2dppx) {
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
           html[data-scale] .test {
             height: calc(calc(constant(${key}) * 2) + calc(constant(safe-area-inset-right) * 2));
           }
         }
-        @media (min-resolution: 3dppx) {
+        @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
           html[data-scale] .test {
             height: calc(calc(constant(${key}) * 3) + calc(constant(safe-area-inset-right) * 3));
           }
         }
-        @media (min-resolution: 2dppx) {
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
           html[data-scale] .test {
             width: calc(env(${key}) * 2);
           }
         }
-        @media (min-resolution: 3dppx) {
+        @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
           html[data-scale] .test {
             width: calc(env(${key}) * 3);
           }
         }
-        @media (min-resolution: 2dppx) {
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
           html[data-scale] .test {
             height: calc(calc(env(${key}) * 2) + calc(env(safe-area-inset-right) * 2));
           }
         }
-        @media (min-resolution: 3dppx) {
+        @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
           html[data-scale] .test {
             height: calc(calc(env(${key}) * 3) + calc(env(safe-area-inset-right) * 3));
           }
