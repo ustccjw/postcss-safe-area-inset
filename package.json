@@ -1,6 +1,6 @@
 {
   "name": "postcss-safe-area-inset",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "postcss safe-area-inset for page scale",
   "keywords": [
     "page scale",
@@ -35,7 +35,7 @@
     "postcss": "6"
   },
   "engines": {
-    "node": ">= 9.0.0"
+    "node": ">= 8.10.0"
   },
   "commitlint": {
     "extends": [
