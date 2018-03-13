@@ -1,6 +1,6 @@
 {
   "name": "postcss-safe-area-inset",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "postcss safe-area-inset for page scale",
   "keywords": [
     "page scale",
@@ -28,8 +28,8 @@
     "eslint-config-ustccjw": "1",
     "husky": "0.14",
     "jest": "20",
-    "postcss": "6",
-    "pre-commit": "1"
+    "lint-staged": "7",
+    "postcss": "6"
   },
   "peerDependencies": {
     "postcss": "6"
